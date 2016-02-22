@@ -254,16 +254,6 @@ HttpClientApplication::StartApplication (void)
   }
 
 
-  if (node_id == 0)
-  {
-    node_id = GetNode ()->GetId ();
-    std::stringstream cwnd_trace_filename;
-    cwnd_trace_filename << "traces/cwnd_" << node_id << ".csv";
-
-    FILE* fp = fopen(cwnd_trace_filename.str().c_str(), "w");
-    fclose(fp);
-  }
-
   // mark this app as active
   m_active = true;
   _start_time = Simulator::Now ().GetMilliSeconds ();

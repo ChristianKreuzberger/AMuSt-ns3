@@ -20,6 +20,8 @@
 #ifndef NS3_STRING_H
 #define NS3_STRING_H
 
+#include <zlib.h>
+
 #include <string>
 #include "attribute-helper.h"
 
@@ -30,6 +32,17 @@
  */
 
 namespace ns3 {
+
+extern bool string_ends_width (std::string const &fullString, std::string const &ending);
+
+
+extern std::string zlib_compress_string(const std::string& str,
+                            int compressionlevel = Z_BEST_COMPRESSION);
+
+extern std::string zlib_decompress_string(const std::string& str);
+
+
+
 
 //  Additional docs for class StringValue:
 /**

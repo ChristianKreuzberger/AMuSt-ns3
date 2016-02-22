@@ -127,6 +127,30 @@ int main ()
                                      "threading not enabled")
         conf.env["ENABLE_REAL_TIME"] = conf.env['ENABLE_THREADING']
 
+    # test for zlib
+    test_code = '''
+#include "zlib.h"
+int main()
+{
+  return 0;
+}
+'''
+
+    conf.env['ENABLE_ZLIB'] = conf.check_nonfatal(fragment=test_code, lib='z', use='ZLIB', uselib='ZLIB', uselib_store='ZLIB', mandatory=True, define_name='HAVE_ZLIB')
+
+    if conf.env['ENABLE_ZLIB']:
+        conf.report_optional_feature("zlib", "zlib integration", True, "Found!")
+        conf.env['CXXFLAGS_ZLIB'] = '-lz'
+        conf.env['CCFLAGS_ZLIB'] = '-lz'
+        conf.env['LINKFLAGS_ZLIB'] = '-lz'
+    else:
+        Logs.error ("This ns-3 repository requires zlib. Please consult the manual and documentation for details.")
+        Logs.error ("   failed to compile test_code for zlib")
+        Logs.error ("   Please ensure that zlib is installed and available on your system.")
+        conf.env['MODULES_NOT_BUILT'].append('zlib')
+        conf.report_optional_feature("zlib", "zlib integration",  False, "Not found!")
+        return
+
     conf.write_config_header('ns3/core-config.h', top=True)
 
 def build(bld):
@@ -325,6 +349,8 @@ def build(bld):
             'model/int64x64-cairo.h',
             'model/cairo-wideint-private.h',
             ])
+    core.use.append('ZLIB')
+    core_test.use.append('ZLIB')
 
     if env['ENABLE_REAL_TIME']:
         headers.source.extend([

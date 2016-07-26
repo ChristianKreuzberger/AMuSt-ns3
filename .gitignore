@@ -9,3 +9,4 @@
 /waf-tools/relocation.pyc
 /waf-tools/shellcmd.pyc
 /build
+.waf-*/
